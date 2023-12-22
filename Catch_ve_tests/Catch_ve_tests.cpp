@@ -1089,8 +1089,8 @@ TEST_CASE("loads and stores", "[ve_tests]") {
 	float* float_data = dcon::cache_aligned_allocator<float>().allocate(32);
 	memcpy(float_data, reference_float_data, sizeof(float) * 32);
 
-	int16_t reference_int16_data[] = { 1, 23, 5, 1, -3, 5, 0, 1, 5, 23, 5, 2, 6, 235, 23, 35, 235, 253, 36, 486, 586,
-		100, 101, 102, 104, 102, 104, 5034, 1234, 88, 77, 66 };
+	int16_t reference_int16_data[] = { 1, 23, -5, 1, -3, 5, 0, 1, 5, 23, 5, -2, 6, 235, -23, 35, 235, -253, 36, 486, 586,
+		100, 101, -102, 104, 102, -104, 5034, 1234, -88, 77, 66 };
 	int16_t* int16_data = dcon::cache_aligned_allocator<int16_t>().allocate(32);
 	memcpy(int16_data, reference_int16_data, sizeof(int16_t) * 32);
 
@@ -1099,8 +1099,8 @@ TEST_CASE("loads and stores", "[ve_tests]") {
 	uint16_t* uint16_data = dcon::cache_aligned_allocator<uint16_t>().allocate(32);
 	memcpy(uint16_data, reference_uint16_data, sizeof(uint16_t) * 32);
 
-	int8_t reference_int8_data[] = { 1, 23, 5, 1, -3, 5, 0, 1, 5, 23, 5, 2, 6, 235, 23, 35, 235, 253, 36, 186, 86,
-		100, 101, 102, 104, 102, 104, 34, 234, 88, 77, 66 };
+	int8_t reference_int8_data[] = { 1, 23, 5, 1, -3, 5, 0, 1, 5, 23, 5, -2, 6, 235, -23, 35, 235, -253, 36, 186, 86,
+		100, 101, -102, 104, 102, -104, 34, 234, -88, 77, 66 };
 	int8_t* int8_data = dcon::cache_aligned_allocator<int8_t>().allocate(32);
 	memcpy(int8_data, reference_int8_data, sizeof(int8_t) * 32);
 

@@ -1583,28 +1583,27 @@ namespace ve {
 	}
 	template<typename T>
 	RELEASE_INLINE void store(contiguous_tags_base<T> e, int16_t* dest, int_vector values) {
-		for(int i = 0; i < int(ve::vector_size); ++i)
-			dest[e.value + i] = int16_t(values[i]);
+		_mm256_storeu_epi16(dest + e.value, _mm512_cvtepi32_epi16(values.value));
 	}
 	template<typename T>
 	RELEASE_INLINE void store(contiguous_tags_base<T> e, uint16_t* dest, int_vector values) {
-		for(int i = 0; i < int(ve::vector_size); ++i)
-			dest[e.value + i] = uint16_t(values[i]);
+		_mm256_storeu_epi16(dest + e.value, _mm512_cvtepi32_epi16(values.value));
 	}
 	template<typename T>
 	RELEASE_INLINE void store(contiguous_tags_base<T> e, int8_t* dest, int_vector values) {
-		for(int i = 0; i < int(ve::vector_size); ++i)
-			dest[e.value + i] = int8_t(values[i]);
+		_mm_storeu_epi8(dest + e.value, _mm512_cvtepi32_epi8(values.value));
 	}
 	template<typename T>
 	RELEASE_INLINE void store(contiguous_tags_base<T> e, uint8_t* dest, int_vector values) {
-		for(int i = 0; i < int(ve::vector_size); ++i)
-			dest[e.value + i] = uint8_t(values[i]);
+		_mm_storeu_epi8(dest + e.value, _mm512_cvtepi32_epi8(values.value));
 	}
 	template<typename T, typename U>
-	RELEASE_INLINE auto store(contiguous_tags_base<T> e, U* dest, tagged_vector<U> values)->std::enable_if_t < sizeof(U) < 4, void > {
-		for(int i = 0; i < int(ve::vector_size); ++i)
-			dest[e.value + i] = values[i];
+	RELEASE_INLINE auto store(contiguous_tags_base<T> e, U* dest, tagged_vector<U> values)->std::enable_if_t < sizeof(U) == 2, void > {
+		_mm256_storeu_epi16(dest + e.value, _mm512_cvtepi32_epi16(values.to_original_values()));
+	}
+	template<typename T, typename U>
+	RELEASE_INLINE auto store(contiguous_tags_base<T> e, U* dest, tagged_vector<U> values)->std::enable_if_t < sizeof(U) == 1, void > {
+		_mm_storeu_epi8(dest + e.value, _mm512_cvtepi32_epi8(values.to_original_values()));
 	}
 	template<typename T, typename I>
 	RELEASE_INLINE auto store(partial_contiguous_tags<T> e, I* dest, int_vector values) -> std::enable_if_t<sizeof(I) < 4, void> {
@@ -1786,7 +1785,6 @@ namespace ve {
 #endif
 			dest[indices[i].index()] = values[i];
 		}
-
 	}
 	template<typename U, typename I>
 	RELEASE_INLINE auto store(tagged_vector<U> indices, I* dest, int_vector values) -> std::enable_if_t<std::numeric_limits<I>::is_integer && sizeof(I) <= 4, void> {
